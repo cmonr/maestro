@@ -28,7 +28,7 @@ THIS_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 pushd $THIS_DIR
 
-if [ \( -n "$DEBUG" \) -o \( -n "$DEBUG2" \) ]; then
+if [ \( -n "${DEBUG:-}" \) -o \( -n "${DEBUG2:-}" \) ]; then
   echo "DEBUG ON"
   GOTAGS="-tags debug"
 	make native.a-debug
@@ -47,13 +47,14 @@ sed -i -e "s/BUILD_DATE/${DATE}/g" maestroutils/status.go
 # highlight errors: https://serverfault.com/questions/59262/bash-print-stderr-in-red-color
 # color()(set -o pipefail;"$@" 2>&1>&3|sed $'s,.*,\e[31m&\e[m,'>&2)3>&1
 
-if [ "$1" != "preprocess_only" ]; then
-	pushd $GOPATH/bin
-  echo $PWD
-	if [ ! -z "$TIGHT" ]; then
-	    go build $GOTAGS -ldflags="-s -w" "$@" github.com/armPelionEdge/maestro/maestro 
+if [ "${1:-}" != "preprocess_only" ]; then
+	mkdir -p "${GOPATH}/bin"
+	pushd "${GOPATH}/bin"
+	pwd
+	if [ ! -z "${TIGHT:-}" ]; then
+	    go build "${GOTAGS}" -ldflags="-s -w" "$@" github.com/armPelionEdge/maestro/maestro 
 	else
-	    go build $GOTAGS "$@" github.com/armPelionEdge/maestro/maestro 
+	    go build "${GOTAGS}" "$@" github.com/armPelionEdge/maestro/maestro 
 	fi
 	popd
 fi
