@@ -15,9 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -ufo pipefail
+set -eEufo pipefail
 
-onerr()
+on_err()
 {
   local exit_code="$?"
   local src=${1}
@@ -29,7 +29,7 @@ onerr()
   exit ${exit_code}
 }
 
-trap 'onerr "${BASH_SOURCE}" "${LINENO}" "$BASH_COMMAND"' ERR
+trap 'on_err "${BASH_SOURCE}" "${LINENO}" "${BASH_COMMAND}"' ERR
 
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
