@@ -12,14 +12,13 @@ install:
   - |
     cd ../../
     mkdir -p "${fork_src}"
-    mv "${TRAVIS_REPO_SLUG}" "./${fork_src}"
+    mv "${TRAVIS_REPO_SLUG}/*" "./${fork_src}"
     cd "${fork_src}"
-  - pwd 
 
 
 script: 
   - pwd
-  - cd "${fork_src}"
+  - ls -al
   # Build dependencies
   - ./build-deps.sh
 
@@ -27,7 +26,7 @@ script:
   - ./build.sh
 
   # Run unit tests
-  - go test "github.com/${TRAVIS_REPO_SLUG}" || true
+  - go test "github.com/${fork_src}" || true
 
 
 matrix:
