@@ -17,10 +17,7 @@
 
 set -eEufo pipefail
 
-on_err() {
-  printf "\033[1m%s\033[0m: \033[3'%s'\033[0 failed with \033[3'%s'\033[0\n" \
-    "${1}:${2}" "${3}" "$?" 1>&2;
-}
+on_err() { printf "%s: '%s' failed with '%s'\n" "${1}:${2}" "${3}" "$?" 1>&2; }
 trap 'on_err "${BASH_SOURCE}" "${LINENO}" "${BASH_COMMAND}"' ERR
 
 SOURCE="${BASH_SOURCE[0]}"
