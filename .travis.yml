@@ -4,16 +4,16 @@ dist: xenial
 
 env:
   global:
-    - parent_user="armPelionEdge"
-    - parent_repo="maestro"
+    - fork_src="armPelionEdge/maestro"
 
 
-# Note: This repo has an unmaintained 'GoDep' index.  Bypassing for now.
-#       https://docs.travis-ci.com/user/languages/go/#godep-support
+# go's 'opinions' can die in a fire...
 install:
-  - mkdir "../../${parent_user}"
-  - ln -s "$(pwd)" "$(readlink -m "../../${parent_user}/${parent_repo}")"
-  - ls -al ../../*/*
+  - cd ../../
+  - mkdir -p "${fork_src}"
+  - mv "${TRAVIS_REPO_SLUG}" "./${fork_src}"
+  - cd "${fork_src}"
+
 
 script: 
   # Build dependencies
