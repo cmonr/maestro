@@ -12,8 +12,8 @@ install:
   - |
     if [[ "${TRAVIS_REPO_SLUG}" != "${upstream}" ]]; then
       cd ../../
-      mkdir "$(dirname "${upstream}")"
-      mv "${TRAVIS_REPO_SLUG}" "${upstream}"
+      mkdir -p "${upstream}"
+      mv "${TRAVIS_REPO_SLUG}/*" "${upstream}"
       cd "${upstream}"
     fi
 
