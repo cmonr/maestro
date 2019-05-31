@@ -9,10 +9,11 @@ env:
 
 # go's 'opinions' can die in a fire...
 install:
-  - cd ../../
-  - mkdir -p "${fork_src}"
-  - mv "${TRAVIS_REPO_SLUG}" "./${fork_src}"
-  - cd "${fork_src}"
+  - |
+    cd ../../
+    mkdir -p "${fork_src}"
+    mv "${TRAVIS_REPO_SLUG}" "./${fork_src}"
+    cd "${fork_src}"
 
 
 script: 
