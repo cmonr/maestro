@@ -17,18 +17,7 @@
 
 set -eEufo pipefail
 
-on_err()
-{
-  local exit_code="$?"
-  local src=${1}
-  local line=${2}
-  local cmd=${3}
-
-  printf "%s\n" "${src}:${line} '${cmd}' failed."
-
-  exit ${exit_code}
-}
-
+on_err() { printf "\033[1m%s\033[0m: %s failed with %s\n" "${1}:${2}" "${3}" "$?" 1>&2; }
 trap 'on_err "${BASH_SOURCE}" "${LINENO}" "${BASH_COMMAND}"' ERR
 
 SOURCE="${BASH_SOURCE[0]}"
