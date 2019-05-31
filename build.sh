@@ -17,7 +17,10 @@
 
 set -eEufo pipefail
 
-on_err() { printf "\033[1m%s\033[0m: %s failed with %s\n" "${1}:${2}" "${3}" "$?" 1>&2; }
+on_err() {
+  printf "\033[1m%s\033[0m: \033[3'%s'\033[0 failed with \033[3'%s'\033[0\n" \
+    "${1}:${2}" "${3}" "$?" 1>&2;
+}
 trap 'on_err "${BASH_SOURCE}" "${LINENO}" "${BASH_COMMAND}"' ERR
 
 SOURCE="${BASH_SOURCE[0]}"
@@ -55,11 +58,11 @@ sed -i -e "s/BUILD_DATE/${DATE}/g" maestroutils/status.go
 if [ "${1:-}" != "preprocess_only" ]; then
 	mkdir -p "${GOPATH}/bin" &> /dev/null || true
 
-  pushd "${GOPATH}/bin"
+  #pushd "${GOPATH}/bin"
 	if [ ! -z "${TIGHT:-}" ]; then
 	    go build "${GOTAGS}" -ldflags="-s -w" "$@" github.com/armPelionEdge/maestro/maestro 
 	else
 	    go build "${GOTAGS}" "$@" github.com/armPelionEdge/maestro/maestro 
 	fi
-	popd
+	#popd
 fi
