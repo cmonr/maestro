@@ -22,7 +22,6 @@ trap 'on_err "${BASH_SOURCE}" "${LINENO}" "${BASH_COMMAND}"' ERR
 
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
-  SELF="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
   SOURCE="$(readlink "$SOURCE")"
   [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
 done
@@ -30,10 +29,10 @@ done
 THIS_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 
-pushd $THIS_DIR
+pushd "${THIS_DIR}"
 
 GOTAGS=""
-if [ \( -n "${DEBUG:-}" \) -o \( -n "${DEBUG2:-}" \) ]; then
+if [[ -n "${DEBUG:-}" ]] || [[ -n "${DEBUG2:-}" ]]; then
   echo "DEBUG ON"
   GOTAGS="-tags debug"
 	make native.a-debug
@@ -55,11 +54,11 @@ sed -i -e "s/BUILD_DATE/${DATE}/g" maestroutils/status.go
 if [ "${1:-}" != "preprocess_only" ]; then
 	mkdir -p "${GOPATH}/bin" &> /dev/null || true
 
-  #pushd "${GOPATH}/bin"
+  pushd "${GOPATH}/bin"
 	if [ ! -z "${TIGHT:-}" ]; then
 	    go build "${GOTAGS}" -ldflags="-s -w" "$@" github.com/armPelionEdge/maestro/maestro 
 	else
 	    go build "${GOTAGS}" "$@" github.com/armPelionEdge/maestro/maestro 
 	fi
-	#popd
+	popd
 fi
