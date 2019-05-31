@@ -19,12 +19,17 @@ set -ufo pipefail
 
 onerr()
 {
-  echo "ERROR: $BASH_SOURCE:$LINENO $BASH_COMMAND" >&2
+  local exit_code="$?"
+  local src=${1}
+  local line=${2}
+  local cmd=${3}
 
-  exit 1
+  echo "${src}:${line} '${cmd}' failed."
+
+  exit ${exit_code}
 }
 
-trap onerr ERR
+trap 'onerr "${BASH_SOURCE}" "${LINENO}" "$BASH_COMMAND"' ERR
 
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
@@ -34,10 +39,6 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 
 THIS_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-
-echo "
----
-"
 
 
 pushd $THIS_DIR
@@ -64,7 +65,10 @@ sed -i -e "s/BUILD_DATE/${DATE}/g" maestroutils/status.go
 
 if [ "${1:-}" != "preprocess_only" ]; then
 	mkdir -p "${GOPATH}/bin" &> /dev/null || true
-	pushd "${GOPATH}/bin"
+
+  echo "--- $(pwd) ---"
+
+  pushd "${GOPATH}/bin"
 	pwd
 	if [ ! -z "${TIGHT:-}" ]; then
 	    go build "${GOTAGS}" -ldflags="-s -w" "$@" github.com/armPelionEdge/maestro/maestro 
