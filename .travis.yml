@@ -15,7 +15,8 @@ install:
       target="$(pwd)";
       cd ../../;
       dir=$(pwd);
-      ln -s "${dir}/${parent_repo}" "${target}"
+      mkdir armPelionEdge
+      ln -s "${target}" "${dir}/${parent_repo}" 
     )
   - ls -al ../../*/*
 
