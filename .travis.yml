@@ -5,17 +5,21 @@ dist: xenial
 
 # Note: This repo has an unmaintained 'GoDep' index.  Bypassing for now.
 #       https://docs.travis-ci.com/user/languages/go/#godep-support
-install: echo ""
+install:
+  - pwd
+  - ( cd ../../ && ln -s "$(pwd)/${TRAVIS_REPO_SLUG}" "$(pwd)/armPelionEdge/maestro" )
+  - ls -al /*/*
 
 script: 
+  - echo "Blah" | false
   # Build dependencies
-  - ./build-deps.sh
+  #- ./build-deps.sh
 
   # Build maestro
-  - ./build.sh
+  #- ./build.sh
 
   # Run unit tests
-  - go test "github.com/${TRAVIS_REPO_SLUG}" || true
+  #- go test "github.com/${TRAVIS_REPO_SLUG}" || true
 
 
 matrix:
