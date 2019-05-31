@@ -14,9 +14,12 @@ install:
     mkdir -p "${fork_src}"
     mv "${TRAVIS_REPO_SLUG}" "./${fork_src}"
     cd "${fork_src}"
+  - pwd 
 
 
 script: 
+  - pwd
+  - cd "${fork_src}"
   # Build dependencies
   - ./build-deps.sh
 
