@@ -4,14 +4,20 @@ dist: xenial
 
 env:
   global:
-    - parent="armPelionEdge"
+    - parent_repo="armPelionEdge/maestro"
 
 # Note: This repo has an unmaintained 'GoDep' index.  Bypassing for now.
 #       https://docs.travis-ci.com/user/languages/go/#godep-support
 install:
   - pwd
-  - ( cd ../../ && ln -s "$(pwd)/${TRAVIS_REPO_SLUG}" "$(pwd)/armPelionEdge/maestro" )
-  - ls -al /*/*
+  - |
+    (
+      target="$(pwd)";
+      cd ../../;
+      dir=$(pwd);
+      ln -s "${dir}/${parent_repo}" "${target}"
+    )
+  - ls -al ../../*/*
 
 script: 
   - echo "Blah" | false
