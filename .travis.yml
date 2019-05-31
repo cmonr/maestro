@@ -7,13 +7,15 @@ env:
     - upstream="armPelionEdge/maestro"
 
 
-# go's 'opinions' can die in a fire...
 install:
+  # Moves a fork to the upstream directory, because of go's _opinions_...
   - |
-    cd ../../
-    mkdir "$(dirname "${upstream}")"
-    mv "${TRAVIS_REPO_SLUG}" "${upstream}"
-    cd "${upstream}"
+    if [[ "${TRAVIS_REPO_SLUG}" != "${upstream}" ]]; then
+      cd ../../
+      mkdir "$(dirname "${upstream}")"
+      mv "${TRAVIS_REPO_SLUG}" "${upstream}"
+      cd "${upstream}"
+    fi
 
 
 script: 
