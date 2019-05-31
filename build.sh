@@ -54,11 +54,9 @@ sed -i -e "s/BUILD_DATE/${DATE}/g" maestroutils/status.go
 if [ "${1:-}" != "preprocess_only" ]; then
 	mkdir -p "${GOPATH}/bin" &> /dev/null || true
 
-  pushd "${GOPATH}/bin"
 	if [ ! -z "${TIGHT:-}" ]; then
 	    go build "${GOTAGS}" -ldflags="-s -w" "$@" github.com/armPelionEdge/maestro/maestro 
 	else
 	    go build "${GOTAGS}" "$@" github.com/armPelionEdge/maestro/maestro 
 	fi
-	popd
 fi
