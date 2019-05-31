@@ -24,7 +24,7 @@ onerr()
   local line=${2}
   local cmd=${3}
 
-  echo "${src}:${line} '${cmd}' failed."
+  printf "%s\n" "${src}:${line} '${cmd}' failed."
 
   exit ${exit_code}
 }
@@ -66,14 +66,11 @@ sed -i -e "s/BUILD_DATE/${DATE}/g" maestroutils/status.go
 if [ "${1:-}" != "preprocess_only" ]; then
 	mkdir -p "${GOPATH}/bin" &> /dev/null || true
 
-  echo "--- $(pwd) ---"
-
-  pushd "${GOPATH}/bin"
-	pwd
+  #pushd "${GOPATH}/bin"
 	if [ ! -z "${TIGHT:-}" ]; then
 	    go build "${GOTAGS}" -ldflags="-s -w" "$@" github.com/armPelionEdge/maestro/maestro 
 	else
 	    go build "${GOTAGS}" "$@" github.com/armPelionEdge/maestro/maestro 
 	fi
-	popd
+	#popd
 fi
