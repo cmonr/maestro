@@ -26,6 +26,11 @@ done
 
 THIS_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
+echo "
+---
+"
+
+
 pushd $THIS_DIR
 
 GOTAGS=""
@@ -49,7 +54,7 @@ sed -i -e "s/BUILD_DATE/${DATE}/g" maestroutils/status.go
 # color()(set -o pipefail;"$@" 2>&1>&3|sed $'s,.*,\e[31m&\e[m,'>&2)3>&1
 
 if [ "${1:-}" != "preprocess_only" ]; then
-	mkdir -p "${GOPATH}/bin"
+	mkdir -p "${GOPATH}/bin" &> /dev/null || true
 	pushd "${GOPATH}/bin"
 	pwd
 	if [ ! -z "${TIGHT:-}" ]; then
