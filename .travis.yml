@@ -4,21 +4,19 @@ dist: xenial
 
 env:
   global:
-    - fork_src="armPelionEdge/maestro"
+    - upstream="armPelionEdge/maestro"
 
 
 # go's 'opinions' can die in a fire...
 install:
   - |
     cd ../../
-    mkdir "$(dirname "${fork_src}")"
-    mv -v "${TRAVIS_REPO_SLUG}" "${fork_src}"
-    cd "${fork_src}"
+    mkdir "$(dirname "${upstream}")"
+    mv "${TRAVIS_REPO_SLUG}" "${upstream}"
+    cd "${upstream}"
 
 
 script: 
-  - pwd
-  - ls -al
   # Build dependencies
   - ./build-deps.sh
 
@@ -26,7 +24,7 @@ script:
   - ./build.sh
 
   # Run unit tests
-  - go test "github.com/${fork_src}" || true
+  - go test "github.com/${upstream}" || true
 
 
 matrix:
