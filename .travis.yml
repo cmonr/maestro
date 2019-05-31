@@ -4,32 +4,26 @@ dist: xenial
 
 env:
   global:
-    - parent_repo="armPelionEdge/maestro"
+    - parent_user="armPelionEdge"
+    - parent_repo="maestro"
+
 
 # Note: This repo has an unmaintained 'GoDep' index.  Bypassing for now.
 #       https://docs.travis-ci.com/user/languages/go/#godep-support
 install:
-  - pwd
-  - |
-    (
-      target="$(pwd)";
-      cd ../../;
-      dir=$(pwd);
-      mkdir armPelionEdge
-      ln -s "${target}" "${dir}/${parent_repo}" 
-    )
+  - mkdir "../../${parent_user}"
+  - ln -s "$(pwd)" "$(readlink -m "../../${parent_user}/${parent_repo}")"
   - ls -al ../../*/*
 
 script: 
-  - echo "Blah" | false
   # Build dependencies
-  #- ./build-deps.sh
+  - ./build-deps.sh
 
   # Build maestro
-  #- ./build.sh
+  - ./build.sh
 
   # Run unit tests
-  #- go test "github.com/${TRAVIS_REPO_SLUG}" || true
+  - go test "github.com/${TRAVIS_REPO_SLUG}" || true
 
 
 matrix:
