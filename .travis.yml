@@ -11,10 +11,9 @@ install:
   # Moves a fork to the upstream directory, because of go's _opinions_...
   - |
     if [[ "${TRAVIS_REPO_SLUG}" != "${upstream}" ]]; then
-      cd ../../
-      mkdir -p "${upstream}"
-      mv -v "${TRAVIS_REPO_SLUG}" "${upstream}"
-      cd "${upstream}"
+      mkdir -p "../../${upstream}"
+      mv -v * "../../${upstream}/"
+      cd "../../${upstream}"
       ls -al
     fi
 
