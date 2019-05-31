@@ -28,6 +28,7 @@ THIS_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 pushd $THIS_DIR
 
+GOTAGS=""
 if [ \( -n "${DEBUG:-}" \) -o \( -n "${DEBUG2:-}" \) ]; then
   echo "DEBUG ON"
   GOTAGS="-tags debug"
@@ -39,8 +40,8 @@ fi
 popd
 
 # let's get the current commit, and make sure Version() has this.
-COMMIT=`git rev-parse --short=7 HEAD`
-DATE=`date`
+COMMIT=$(git rev-parse --short=7 HEAD)
+DATE=$(date)
 sed -i -e "s/COMMIT_NUMBER/${COMMIT}/g" maestroutils/status.go 
 sed -i -e "s/BUILD_DATE/${DATE}/g" maestroutils/status.go 
 
